@@ -4,7 +4,7 @@ public class Princess {
   public static void main(String[] args) {
 
     Scanner sc = new Scanner(System.in);
-    ArrayList<String> storage = new ArrayList<>();
+    ArrayList<Task> storage = new ArrayList<>();
 
 
 
@@ -14,23 +14,46 @@ public class Princess {
     System.out.println("    ____________________________________________________________");
     System.out.println();
 
-    String input = "";
+    
     while (true) {
-      input = sc.nextLine();
+      String input = sc.nextLine(); String[] inputss = input.split(" "); String code = inputss[0];
+
+
+
       if (input.equals("bye"))    //exit loop
         break;
 
       System.out.println("    ____________________________________________________________");
 
       if (input.equals("list")) {     //listing out the storage
+        System.out.println(" Here are the tasks in your list for your princess!");
         int num = 1;
-        for (String elem : storage) {
-          System.out.println("     " + Integer.toString(num++) + ". " + elem);
+        for (Task elem : storage) {
+          System.out.println("     " + Integer.toString(num++) + "." +
+            "[" + (elem.getIsTaskDone() ? "X" : " ") + "] " +
+            elem.getTaskName());
           
         }
+      } else if (code.equals("mark")) {
+        
+        int elemNum = Integer.parseInt(inputss[1]);
+        Task elem = storage.get(elemNum-1);
+        elem.markTask();
+        System.out.println("     Nice! You are the best! Princess have help you marked this task as done:");
+        System.out.println("     " + "[" + (elem.getIsTaskDone() ? "X" : " ") + "] " + elem.getTaskName());
+
+      } else if (code.equals("unmark")) {
+        int elemNum = Integer.parseInt(inputss[1]);
+        Task elem = storage.get(elemNum-1);
+        elem.unmarkTask();
+        System.out.println("     Whattt?!?! Alright... Princess have marked this task as undone:");
+        System.out.println("     " + "[" + (elem.getIsTaskDone() ? "X" : " ") + "] " + elem.getTaskName());
       }
+
+
+
       else {          //adding  new item into storage
-        storage.add(input);
+        storage.add(new Task(input));
         System.out.println("     added: " + input);
 
       }
