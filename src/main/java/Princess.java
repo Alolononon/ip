@@ -26,12 +26,11 @@ public class Princess {
       System.out.println("    ____________________________________________________________");
 
       if (input.equals("list")) {     //listing out the storage
-        System.out.println(" Here are the tasks in your list for your princess!");
+        System.out.println("     Here are the tasks in your list for your princess!");
         int num = 1;
         for (Task elem : storage) {
           System.out.println("     " + Integer.toString(num++) + "." +
-            "[" + (elem.getIsTaskDone() ? "X" : " ") + "] " +
-            elem.getTaskName());
+            elem.toString());
           
         }
       } else if (code.equals("mark")) {
@@ -40,21 +39,46 @@ public class Princess {
         Task elem = storage.get(elemNum-1);
         elem.markTask();
         System.out.println("     Nice! You are the best! Princess have help you marked this task as done:");
-        System.out.println("     " + "[" + (elem.getIsTaskDone() ? "X" : " ") + "] " + elem.getTaskName());
+        System.out.println("     " + elem.toString());
 
       } else if (code.equals("unmark")) {
         int elemNum = Integer.parseInt(inputss[1]);
         Task elem = storage.get(elemNum-1);
         elem.unmarkTask();
         System.out.println("     Whattt?!?! Alright... Princess have marked this task as undone:");
-        System.out.println("     " + "[" + (elem.getIsTaskDone() ? "X" : " ") + "] " + elem.getTaskName());
+        System.out.println("     " + elem.toString());
       }
 
 
 
       else {          //adding  new item into storage
-        storage.add(new Task(input));
-        System.out.println("     added: " + input);
+        System.out.println("     " + "Got it. I've added this task:");
+
+        Task task;
+        if (code.equals("todo")) {
+          String taskname = input.substring(5); task = new Todo(taskname);
+        } else if (code.equals("deadline")) {
+          String[] stringArr = input.substring(9).split("/by "); String taskname = stringArr[0]; String by = stringArr[1];
+          task = new Deadline(taskname, by);
+
+        } else if (code.equals("event")) {
+          String[] stringArr = input.substring(6).split("/from | /to "); 
+          String taskname = stringArr[0]; String from = stringArr[1]; String to = stringArr[2];
+          task = new Event(taskname, from, to);
+
+
+        } else {
+          task = new Task(input);
+        }
+
+
+        System.out.println("       " + task.toString());
+        storage.add(task);
+
+        System.out.printf("     Now you have %d tasks in the list.\n", storage.size());
+
+        // storage.add(new Task(input));
+        // System.out.println("     added: " + input);
 
       }
       
