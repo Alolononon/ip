@@ -39,14 +39,14 @@ public class Princess {
         Task elem = storage.get(elemNum-1);
         elem.markTask();
         System.out.println("     Nice! You are the best! Princess have help you marked this task as done:");
-        System.out.println("     " + elem.toString());
+        System.out.println("       " + elem.toString());
 
       } else if (code.equals("unmark")) {
         int elemNum = Integer.parseInt(inputss[1]);
         Task elem = storage.get(elemNum-1);
         elem.unmarkTask();
         System.out.println("     Whattt?!?! Alright... Princess have marked this task as undone:");
-        System.out.println("     " + elem.toString());
+        System.out.println("       " + elem.toString());
       }
 
 
