@@ -35,6 +35,19 @@ public class Princess {
               elem.toString());
           }
 
+        } else if (code.equals("delete")) {
+          if (inputss.length < 2)
+            throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
+          else if (!isInteger(inputss[1]) || Integer.parseInt(inputss[1]) < 1 || Integer.parseInt(inputss[1]) > storage.size())
+            throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
+
+          int elemNum = Integer.parseInt(inputss[1]);
+          System.out.println("     Alrighty, Princess have removed this task:");
+          System.out.println("       " + storage.get(elemNum-1).toString());
+          storage.remove(elemNum-1);
+          System.out.printf("     Now you have %d tasks in the list.\n", storage.size());
+          
+
         } else if (code.equals("mark")) {
           if (inputss.length < 2)
             throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
@@ -115,7 +128,7 @@ public class Princess {
     }
 
     System.out.println("    ____________________________________________________________");
-    System.out.println("    Bye. Hope to see you again soon!");
+    System.out.println("     Bye. Hope to see you again soon!");
     System.out.println("    ____________________________________________________________");
 
 
