@@ -11,8 +11,8 @@ public class Task {
     return this.taskName;
   }
   
-  private String getIsTaskDone() {
-    return "[" + (this.isDone ? "X" : " ") + "] ";
+  public boolean getIsTaskDone() {
+    return this.isDone;
   }
 
   public void markTask() {
@@ -24,7 +24,7 @@ public class Task {
   }
 
   public String toString() {
-    return this.getIsTaskDone() + this.taskName;
+    return "[" + (this.isDone ? "X" : " ") + "] " + this.taskName;
   }
 
 }
