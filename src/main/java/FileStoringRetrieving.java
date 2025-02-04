@@ -4,20 +4,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Handles file operations such as ensuring file existence,
+ * reading from a file, writing to a file, and loading tasks.
+ */
 public class FileStoringRetrieving {
-    // Class implementation will go here
 
+
+    /**
+     * Ensures that the specified file exists. If not, it creates the necessary directories and file.
+     *
+     * @param filePath The path of the file to check and create if necessary.
+     */
     public static void ensureFileExists(String filePath) {
-        //============================ file creation ==================
+
         File f = new File(filePath);
-        if (f.exists()) {
-//            System.out.println("File exists");
-//            try {
-//                printFileContents(filePath);
-//            } catch (FileNotFoundException e) {
-//                System.out.println("File not found");
-//            }
-        } else {
+        if (!f.exists()) {
 //            System.out.println("File does not exist");
             File folder = f.getParentFile(); // Get "data/" folder
 
@@ -33,9 +35,15 @@ public class FileStoringRetrieving {
                 }
             }
         }
-        //===============================================================================
+
     }
-    
+
+    /**
+     * Prints the contents of a specified file.
+     *
+     * @param filePath The path of the file to read.
+     * @throws FileNotFoundException If the file does not exist.
+     */
     public static void printFileContents(String filePath) throws FileNotFoundException {
         File f = new File(filePath); // create a File for the given file path
         Scanner s = new Scanner(f); // create a Scanner using the File as the source
@@ -44,6 +52,12 @@ public class FileStoringRetrieving {
         }
     }
 
+    /**
+     * Loads tasks from a file and stores them in the provided ArrayList.
+     *
+     * @param filePath The path of the file to read from.
+     * @param storage  The ArrayList to store the loaded tasks.
+     */
     public static void loadTasksFromFile(String filePath, ArrayList<Task> storage) {
         File file = new File(filePath);
         try {
@@ -90,7 +104,13 @@ public class FileStoringRetrieving {
 
 
 
-
+    /**
+     * Writes tasks from an ArrayList to a file.
+     *
+     * @param filePath The path of the file to write to.
+     * @param storage  The ArrayList of tasks to save.
+     * @throws IOException If an error occurs while writing to the file.
+     */
     public static void writeToFile(String filePath, ArrayList<Task> storage) throws IOException {
         FileWriter fw = new FileWriter(filePath);
         for (Task task : storage) {
