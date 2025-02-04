@@ -141,6 +141,7 @@ public class Princess {
                     System.out.println("       " + "todo [taskname]");
                     System.out.println("       " + "deadline [taskname] /by [deadline]");
                     System.out.println("       " + "event [taskname] /from [date/time] /to [date/time]");
+                    System.out.println("       " + "find [keyword]");
                     System.out.println("       " + "bye");
 
                 } else if (code.equals("find")) {
