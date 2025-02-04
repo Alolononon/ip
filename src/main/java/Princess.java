@@ -12,14 +12,18 @@ public class Princess {
 
         ArrayList<Task> storage = new ArrayList<>();
 
+
         Scanner sc = new Scanner(System.in);
+
         String filePath = "data/saved_tasks.txt";
 
         FileStoringRetrieving.ensureFileExists(filePath);
         FileStoringRetrieving.loadTasksFromFile(filePath, storage);
 
 
-        // Display welcome message
+
+
+
         System.out.println("    ____________________________________________________________");
         System.out.println("     Hello! I'm your Beautiful Princess");
         System.out.println("     What can I do for you?");
@@ -32,14 +36,13 @@ public class Princess {
                 Task task;
 
 
-                // Exit the application
-                if (input.equals("bye"))
+
+                if (input.equals("bye"))    //exit loop
                     break;
 
                 System.out.println("    ____________________________________________________________");
 
-                if (input.equals("list")) {
-                    //listing out all tasks
+                if (input.equals("list")) {     //listing out the storage
                     System.out.println("     Here are the tasks in your list for your princess!");
                     int num = 1;
                     if (storage.isEmpty()) {
@@ -51,7 +54,6 @@ public class Princess {
                     }
 
                 } else if (code.equals("delete")) {
-                    // Delete a task
                     if (inputss.length < 2)
                         throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
                     else if (!isInteger(inputss[1]) || Integer.parseInt(inputss[1]) < 1 || Integer.parseInt(inputss[1]) > storage.size())
@@ -65,7 +67,6 @@ public class Princess {
 
 
                 } else if (code.equals("mark")) {
-                    // Mark a task as done
                     if (inputss.length < 2)
                         throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
                     else if (!isInteger(inputss[1]) || Integer.parseInt(inputss[1]) < 1 || Integer.parseInt(inputss[1]) > storage.size())
@@ -78,21 +79,19 @@ public class Princess {
                     System.out.println("       " + elem.toString());
 
                 } else if (code.equals("unmark")) {
-                    // Mark a task as undone
-                    if (inputss.length < 2)
-                        throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
-                    else if (!isInteger(inputss[1]) || Integer.parseInt(inputss[1]) < 1 ||
+                      if (inputss.length < 2)
+                          throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
+                      else if (!isInteger(inputss[1]) || Integer.parseInt(inputss[1]) < 1 ||
                               Integer.parseInt(inputss[1]) > storage.size())
-                        throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
+                          throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
 
-                    int elemNum = Integer.parseInt(inputss[1]);
-                    Task elem = storage.get(elemNum-1);
-                    elem.unmarkTask();
-                    System.out.println("     Whattt?!?! Alright... Princess have marked this task as undone:");
-                    System.out.println("       " + elem.toString());
+                      int elemNum = Integer.parseInt(inputss[1]);
+                      Task elem = storage.get(elemNum-1);
+                      elem.unmarkTask();
+                      System.out.println("     Whattt?!?! Alright... Princess have marked this task as undone:");
+                      System.out.println("       " + elem.toString());
 
                 } else if (code.equals("todo") || code.equals("deadline") || code.equals("event")) {
-                    // Add a new task
 
                     if (inputss.length < 2)
                         throw new PrincessException("     " + "OH NOOO!!! Sweetheart, There is no task description!");
@@ -137,9 +136,7 @@ public class Princess {
                         System.out.println("     " + "try again");
                     }
 
-
                 } else if (code.equals("help")) {
-                    // Display help message
                     System.out.println("     " + "below are the commands! Command me boi!");
                     System.out.println("       " + "list");
                     System.out.println("       " + "delete [index]");
@@ -168,7 +165,7 @@ public class Princess {
         System.out.println("     Bye. Hope to see you again soon!");
         System.out.println("    ____________________________________________________________");
 
-        // Save tasks to file before exiting
+
         try {
             FileStoringRetrieving.writeToFile(filePath, storage);
         } catch (IOException e) {
