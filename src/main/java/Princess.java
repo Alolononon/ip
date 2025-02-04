@@ -1,8 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -144,8 +140,31 @@ public class Princess {
                     System.out.println("       " + "unmark [index]");
                     System.out.println("       " + "todo [taskname]");
                     System.out.println("       " + "deadline [taskname] /by [deadline]");
-                    System.out.println("       " + "evemt [taskname] /from [date/time] /to [date/time]");
+                    System.out.println("       " + "event [taskname] /from [date/time] /to [date/time]");
                     System.out.println("       " + "bye");
+
+                } else if (code.equals("find")) {
+                    if (inputss.length < 2)
+                        throw new PrincessException("     " + "OH NOOO!!! There is missing keyword. Please input a keyword to search.");
+
+                    String keyword = input.substring(5).toLowerCase();
+                    ArrayList<Task> matchingTasks = new ArrayList<>();
+
+                    for (Task eachtask : storage) {
+                        if (eachtask.getTaskName().toLowerCase().contains(keyword)) {
+                            matchingTasks.add(eachtask);
+                        }
+                    }
+
+                    if (matchingTasks.isEmpty()) {
+                        System.out.println("     No matching tasks found.");
+                    } else {
+                        System.out.println("     Here are the matching tasks in your list:");
+                        for (int i = 0; i < matchingTasks.size(); i++) {
+                            System.out.println("     " + (i + 1) + "." + matchingTasks.get(i));
+                        }
+                    }
+
 
                 } else {
                     throw new PrincessException("     " + "OH NOOO!!! I don't understand what that means... type 'help' for help");
