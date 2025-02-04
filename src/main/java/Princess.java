@@ -2,7 +2,10 @@ import java.io.IOException;
 import java.util.*;
 
 
-
+/**
+ * A task management application that allows users to add, delete, mark, and unmark tasks.
+ * Tasks can be of type Todo, Deadline, or Event. Tasks are saved to and loaded from a file.
+ */
 public class Princess {
     public static void main(String[] args) {
 
