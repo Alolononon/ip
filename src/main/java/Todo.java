@@ -11,19 +11,19 @@ public class Todo extends Task {
      * @param description The description of the task.
      */
     public Todo(String description) {
-      super(description);
+        super(description);
     }
 
 
-  /**
-   * Returns the string representation of the Todo task.
-   *
-   * @return A formatted string indicating the task type and its details.
-   */
+    /**
+     * Returns the string representation of the Todo task.
+     *
+     * @return A formatted string indicating the task type and its details.
+     */
     @Override
     public String toString() {
         return "[T]" + super.toString();
-  }
+    }
 
 
 }
