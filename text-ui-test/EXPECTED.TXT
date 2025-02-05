@@ -1,5 +1,5 @@
     ____________________________________________________________
-     Hello! I'm your Beautiful Princess
+     Hello! I'm your Beautiful princess
      What can I do for you?
     ____________________________________________________________
 
@@ -27,7 +27,7 @@
     ____________________________________________________________
 
     ____________________________________________________________
-     Here are the tasks in your list for your princess!
+     Here are the tasks in your list for your Princess!
      1.[T][ ] borrow book
      2.[D][X] return book  (by: Mar 01 2000, 1:00PM)
      3.[E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
@@ -39,7 +39,7 @@
     ____________________________________________________________
 
     ____________________________________________________________
-     Here are the tasks in your list for your princess!
+     Here are the tasks in your list for your Princess!
      1.[T][ ] borrow book
      2.[D][ ] return book  (by: Mar 01 2000, 1:00PM)
      3.[E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
@@ -52,7 +52,7 @@
     ____________________________________________________________
 
     ____________________________________________________________
-     Here are the tasks in your list for your princess!
+     Here are the tasks in your list for your Princess!
      1.[T][ ] borrow book
      2.[E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
     ____________________________________________________________
