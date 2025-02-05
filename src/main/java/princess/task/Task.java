@@ -1,3 +1,4 @@
+package princess.task;
 
 /**
  * Represents a task with a name and a completion status.

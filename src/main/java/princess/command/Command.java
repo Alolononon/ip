@@ -1,3 +1,9 @@
+package princess.command;
+
+import princess.PrincessException;
+import princess.ui.UI;
+import princess.task.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,7 +31,7 @@ public class Command {
 
                 if (input.equals("list")) {
                     //listing out all tasks
-                    System.out.println("     Here are the tasks in your list for your princess!");
+                    System.out.println("     Here are the tasks in your list for your Princess!");
                     int num = 1;
                     if (taskList.isEmpty()) {
                         System.out.println("     " + "      ---there is nothing in your list---");

@@ -1,3 +1,4 @@
+package princess.ui;
 
 public class UI {
 
@@ -11,7 +12,7 @@ public class UI {
 
     public void showWelcomeMessage() {
         showDivider();
-        System.out.println("     Hello! I'm your Beautiful Princess");
+        System.out.println("     Hello! I'm your Beautiful princess");
         System.out.println("     What can I do for you?");
         showDivider();
         System.out.println();
