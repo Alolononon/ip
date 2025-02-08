@@ -34,10 +34,12 @@ public class Princess {
 
         ui.showWelcomeMessage();    // Display welcome message
 
+
+
         // main command
         try {
-            Command command = new Command();
-            command.execute(ui, storage, taskList);
+            Command command = new Command(ui);
+            command.execute(taskList);
         } catch (Exception e){
             System.out.println("Oops! The princess has encountered a royal error. " +
                     "Time to call in the knights of debugging! \n Terminal error: " + e.getMessage());

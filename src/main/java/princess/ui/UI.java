@@ -1,5 +1,8 @@
 package princess.ui;
 
+import princess.task.Task;
+import princess.task.TaskList;
+
 /**
  * The UI class handles the display of messages and dividers in the terminal.
  * It provides methods for showing welcome messages, help messages, and task-related information.
@@ -65,5 +68,14 @@ public class UI {
         showDivider();
     }
 
+
+    public void showTaskAdded(Task task, TaskList taskList) {
+        System.out.println("     " + "Got it. I've added this task:");
+
+        System.out.println("       " + task.toString());
+        taskList.addElem(task);
+        System.out.printf("     Now you have %d tasks in the list.\n", taskList.getSize());
+
+    }
 
 }
