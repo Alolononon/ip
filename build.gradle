@@ -40,5 +40,10 @@ application {
 }
 
 shadowJar {
-    archiveFileName = 'duke.jar'
+    archiveBaseName = "duke"
+    archiveClassifier = null
+}
+
+run{
+    standardInput = System.in
 }
