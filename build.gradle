@@ -38,3 +38,7 @@ test {
 application {
     mainClass.set("princess.Princess")
 }
+
+shadowJar {
+    archiveFileName = 'duke.jar'
+}
