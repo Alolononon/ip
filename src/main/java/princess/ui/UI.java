@@ -1,15 +1,28 @@
 package princess.ui;
 
+/**
+ * The UI class handles the display of messages and dividers in the terminal.
+ * It provides methods for showing welcome messages, help messages, and task-related information.
+ */
 public class UI {
 
+    /**
+     * Constructs a UI object.
+     */
     public UI() {
-
     }
 
+    /**
+     * Displays a divider line for formatting in the terminal.
+     */
     public void showDivider() {
         System.out.println("    ____________________________________________________________");
     }
 
+    /**
+     * Displays a welcome message to the user.
+     * This method also shows a divider before and after the message.
+     */
     public void showWelcomeMessage() {
         showDivider();
         System.out.println("     Hello! I'm your Beautiful princess");
@@ -18,6 +31,9 @@ public class UI {
         System.out.println();
     }
 
+    /**
+     * Displays a help message with a list of available commands for the user.
+     */
     public void showHelpMessage() {
         System.out.println("     " + "below are the commands! Command me boi!");
         System.out.println("       " + "list");
@@ -31,11 +47,18 @@ public class UI {
         System.out.println("       " + "bye");
     }
 
+    /**
+     * Displays an ending divider line for formatting in the terminal.
+     */
     public void showEndingDivider() {
         showDivider();
         System.out.println();
     }
 
+    /**
+     * Displays an ending message to the user, indicating the program is about to end.
+     * A divider is shown before and after the message.
+     */
     public void showEndingMessage() {
         showDivider();
         System.out.println("     Bye. Hope to see you again soon!");
@@ -43,10 +66,4 @@ public class UI {
     }
 
 
-
-
 }
-
-
-
-
