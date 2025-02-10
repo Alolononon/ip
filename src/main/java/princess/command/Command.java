@@ -1,11 +1,10 @@
 package princess.command;
 
 import princess.PrincessException;
-import princess.ui.UI;
 import princess.task.*;
-
+import princess.ui.UI;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 
 /**
@@ -14,6 +13,8 @@ import java.util.Scanner;
 public class Command {
 
     UI ui;
+    private boolean isExit = false;
+    private String princessResponse = "";
 
     /**
      * Constructor to initialize the Command object with a UI.
@@ -30,56 +31,62 @@ public class Command {
      * @param taskList The list of tasks.
      * @throws Exception If an error occurs during command execution.
      */
-    public void execute(TaskList taskList) throws Exception {
-        Scanner sc = new Scanner(System.in);
+    public String execute(String input, TaskList taskList) throws Exception {
+        princessResponse = "";
 
-        while (true) {
-            try {
-                String input = sc.nextLine(); String[] inputParts = input.split(" "); String code = inputParts[0];
+        try {
+            String[] inputParts = input.split(" ");
+            String code = inputParts[0];
 
-                // Exit the application
-                if (input.equals("bye")) {
-                    break;
-                }
-
-                ui.showDivider();
-
-                if (input.equals("list")) {
-                    handleListCommand(taskList);
-                } else if (code.equals("delete")) {
-                    handleDeleteCommand(taskList, inputParts);
-                } else if (code.equals("mark")) {
-                    handleMarkCommand(taskList, inputParts);
-                } else if (code.equals("unmark")) {
-                    handleUnmarkCommand(taskList, inputParts);
-                } else if (code.equals("todo") || code.equals("deadline") || code.equals("event")) {
-                    try {
-                        if (code.equals("todo")) {     //adding  new item into storage
-                            handleAddToDo(inputParts, input, taskList);
-                        } else if (code.equals("deadline")) {
-                            handleAddDeadline(inputParts,input, taskList);
-                        } else if (code.equals("event")) {
-                            handleAddEvent(inputParts, input, taskList);
-                        }
-                    } catch (IllegalArgumentException e) {          // throw error for invalid date format
-                        System.out.println("     " + e.getMessage());
-                        System.out.println("     " + "try again");
-                    }
-                } else if (code.equals("help")) {
-                    ui.showHelpMessage();       // Display help message
-                } else if (code.equals("find")) {
-                    handleFindFunction(inputParts, input, taskList);
-                } else {
-                    throw new PrincessException("     " + "OH NOOO!!! I don't understand what that means... " +
-                            "type 'help' for help");
-                }
-
-            } catch (PrincessException e) {
-                System.out.println(e.getMessage());
+            // Exit the application
+            if (input.equals("bye")) {
+                isExit = true;
+                princessResponse += ui.showEndingMessage(); // show exiting message when closing app
+                return princessResponse;
             }
 
-            ui.showEndingDivider();     // show ending divider after every action
+            // Commands
+            if (input.equals("list")) {
+                handleListCommand(taskList);
+            } else if (code.equals("delete")) {
+                handleDeleteCommand(taskList, inputParts);
+            } else if (code.equals("mark")) {
+                handleMarkCommand(taskList, inputParts);
+            } else if (code.equals("unmark")) {
+                handleUnmarkCommand(taskList, inputParts);
+            } else if (code.equals("todo") || code.equals("deadline") || code.equals("event")) {
+                try {
+                    if (code.equals("todo")) { //adding  new item into storage
+                        handleAddToDo(inputParts, input, taskList);
+                    } else if (code.equals("deadline")) {
+                        handleAddDeadline(inputParts, input, taskList);
+                    } else if (code.equals("event")) {
+                        handleAddEvent(inputParts, input, taskList);
+                    }
+                } catch (IllegalArgumentException e) { // throw error for invalid date format
+                    princessResponse += "     " + e.getMessage() + "\n";
+                    princessResponse += "     " + "try again\n";
+                }
+            } else if (code.equals("help")) {
+                princessResponse += ui.showHelpMessage(); // Display help message
+            } else if (code.equals("find")) {
+                handleFindFunction(inputParts, input, taskList);
+            } else {
+                throw new PrincessException("     " + "OH NOOO!!! I don't understand what that means... "
+                        + "type 'help' for help");
+            }
+
+
+
+        } catch (PrincessException e) {
+            princessResponse += e.getMessage() + "\n";
         }
+
+        return princessResponse;
+    }
+
+    public boolean isExit() {
+        return isExit;
     }
 
     /**
@@ -87,16 +94,15 @@ public class Command {
      *
      * @param taskList The list of tasks to be displayed.
      */
-    private static void handleListCommand(TaskList taskList) {
+    private void handleListCommand(TaskList taskList) {
         //listing out all tasks
-        System.out.println("     Here are the tasks in your list for your Princess!");
+        princessResponse += "     Here are the tasks in your list for your Princess!\n";
         int num = 1;
         if (taskList.isEmpty()) {
-            System.out.println("     " + "      ---there is nothing in your list---");
+            princessResponse += "     " + "      ---there is nothing in your list---\n";
         }
         for (Task elem : taskList.getTasks()) {
-            System.out.println("     " + Integer.toString(num++) + "." +
-                    elem.toString());
+            princessResponse += "     " + Integer.toString(num++) + "." + elem.toString() + "\n";
         }
     }
 
@@ -109,17 +115,18 @@ public class Command {
      */
     private void handleDeleteCommand(TaskList taskList, String[] inputParts) throws PrincessException {
         // Delete a task
-        if (inputParts.length < 2)
+        if (inputParts.length < 2) {
             throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
-        else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1 ||
-                Integer.parseInt(inputParts[1]) > taskList.getSize())
+        } else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1
+                || Integer.parseInt(inputParts[1]) > taskList.getSize()) {
             throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
+        }
 
         int elemNum = Integer.parseInt(inputParts[1]);
-        System.out.println("     Alrighty, Princess have removed this task:");
-        System.out.println("       " + taskList.getElem(elemNum-1).toString());
-        taskList.removeElem(elemNum-1);
-        System.out.printf("     Now you have %d tasks in the list.\n", taskList.getSize());
+        princessResponse += "     Alrighty, Princess have removed this task:\n"
+                + "       " + taskList.getElem(elemNum - 1).toString() + "\n";
+        taskList.removeElem(elemNum - 1);
+        princessResponse += "     Now you have " + taskList.getSize() + " tasks in the list.\n";
     }
 
     /**
@@ -138,10 +145,10 @@ public class Command {
             throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
 
         int elemNum = Integer.parseInt(inputParts[1]);
-        Task elem = taskList.getElem(elemNum-1);
+        Task elem = taskList.getElem(elemNum - 1);
         elem.markTask();
-        System.out.println("     Nice! You are the best! Princess have help you marked this task as done:");
-        System.out.println("       " + elem.toString());
+        princessResponse += "     Nice! You are the best! Princess have help you marked this task as done:\n"
+                          + "       " + elem.toString() + "\n";
     }
 
     /**
@@ -153,17 +160,18 @@ public class Command {
      */
     private void handleUnmarkCommand(TaskList taskList, String[] inputParts) throws PrincessException {
         // Mark a task as undone
-        if (inputParts.length < 2)
+        if (inputParts.length < 2) {
             throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
-        else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1 ||
-                Integer.parseInt(inputParts[1]) > taskList.getSize())
+        } else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1
+                || Integer.parseInt(inputParts[1]) > taskList.getSize()) {
             throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
+        }
 
         int elemNum = Integer.parseInt(inputParts[1]);
-        Task elem = taskList.getElem(elemNum-1);
+        Task elem = taskList.getElem(elemNum - 1);
         elem.unmarkTask();
-        System.out.println("     Whattt?!?! Alright... Princess have marked this task as undone:");
-        System.out.println("       " + elem.toString());
+        princessResponse += "     Whattt?!?! Alright... Princess have marked this task as undone:\n"
+                          + "       " + elem.toString() + "\n";
     }
 
     /**
@@ -174,7 +182,7 @@ public class Command {
      * @param taskList The list of tasks.
      * @throws PrincessException If the input is invalid.
      */
-    private void handleAddToDo(String[] inputParts, String input, TaskList taskList) throws PrincessException{
+    private void handleAddToDo(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         if (inputParts.length < 2) {
             throw new PrincessException("     " + "OH NOOO!!! Sweetheart, There is no task description!");
         }
@@ -182,7 +190,7 @@ public class Command {
         String taskname = input.substring(5);
 
         Task newTask = new Todo(taskname);
-        ui.showTaskAdded(newTask, taskList);
+        princessResponse += ui.showTaskAdded(newTask, taskList);
     }
 
     /**
@@ -195,8 +203,8 @@ public class Command {
      */
     private void handleAddDeadline(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         if (inputParts.length < 4 || !input.contains("/by")) {
-            throw new PrincessException("     " + "OH NOOO!!! Sweetheart, please follow the deadline format: " +
-                    "deadline [task name] /by [deadline]");
+            throw new PrincessException("     " + "OH NOOO!!! Sweetheart, please follow the deadline format: "
+                    + "deadline [task name] /by [deadline]");
         }
 
         String[] stringArr = input.substring(9).split("/by ");
@@ -205,7 +213,7 @@ public class Command {
         String by = stringArr[1];
 
         Task newTask = new Deadline(taskName, by);
-        ui.showTaskAdded(newTask, taskList);
+        princessResponse += ui.showTaskAdded(newTask, taskList);
     }
 
     /**
@@ -218,8 +226,8 @@ public class Command {
      */
     private void handleAddEvent(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         if (inputParts.length < 6 || !input.contains("/from") || !input.contains("/to")) {
-            throw new PrincessException("     " + "OH NOOO!!! Sweetheart, please follow the deadline format: " +
-                    "event [taskname] /from [date/time] /to [date/time]");
+            throw new PrincessException("     " + "OH NOOO!!! Sweetheart, please follow the deadline format: "
+                    + "event [taskname] /from [date/time] /to [date/time]");
         }
 
         String[] stringArr = input.substring(6).split("/from | /to ");
@@ -230,7 +238,7 @@ public class Command {
 
 
         Task newTask = new Event(taskName, from, to);
-        ui.showTaskAdded(newTask, taskList);
+        princessResponse += ui.showTaskAdded(newTask, taskList);
     }
 
 
@@ -256,11 +264,11 @@ public class Command {
         }
 
         if (matchingTasks.isEmpty()) {
-            System.out.println("     No matching tasks found.");
+            princessResponse += "     No matching tasks found.\n";
         } else {
-            System.out.println("     Here are the matching tasks in your list:");
+            princessResponse += "     Here are the matching tasks in your list:\n";
             for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.println("     " + (i + 1) + "." + matchingTasks.get(i));
+                princessResponse += "     " + (i + 1) + "." + matchingTasks.get(i) + "\n";
             }
         }
     }
