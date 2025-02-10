@@ -18,64 +18,61 @@ public class UI {
     /**
      * Displays a divider line for formatting in the terminal.
      */
-    public void showDivider() {
-        System.out.println("    ____________________________________________________________");
+    public String showDivider() {
+        return "    ____________________________________________________________\n";
     }
 
     /**
      * Displays a welcome message to the user.
      * This method also shows a divider before and after the message.
      */
-    public void showWelcomeMessage() {
-        showDivider();
-        System.out.println("     Hello! I'm your Beautiful princess");
-        System.out.println("     What can I do for you?");
-        showDivider();
-        System.out.println();
+    public String showWelcomeMessage() {
+        return "     Hello! I'm your Beautiful princess\n"
+            + "     What can I do for you?\n";
+
     }
 
     /**
      * Displays a help message with a list of available commands for the user.
      */
-    public void showHelpMessage() {
-        System.out.println("     " + "below are the commands! Command me boi!");
-        System.out.println("       " + "list");
-        System.out.println("       " + "delete [index]");
-        System.out.println("       " + "mark [index]");
-        System.out.println("       " + "unmark [index]");
-        System.out.println("       " + "todo [taskname]");
-        System.out.println("       " + "deadline [taskname] /by [deadline]");
-        System.out.println("       " + "event [taskname] /from [date/time] /to [date/time]");
-        System.out.println("       " + "find [keyword]");
-        System.out.println("       " + "bye");
+    public String showHelpMessage() {
+        return "     below are the commands! Command me boi!\n"
+                + "       list\n"
+                + "       delete [index]\n"
+                + "       mark [index]\n"
+                + "       unmark [index]\n"
+                + "       todo [taskname]\n"
+                + "       deadline [taskname] /by [deadline]\n"
+                + "       event [taskname] /from [date/time] /to [date/time]\n"
+                + "       find [keyword]\n"
+                + "       bye";
     }
 
     /**
      * Displays an ending divider line for formatting in the terminal.
      */
-    public void showEndingDivider() {
-        showDivider();
-        System.out.println();
+    public String showEndingDivider() {
+        return showDivider() + "\n";
     }
 
     /**
      * Displays an ending message to the user, indicating the program is about to end.
      * A divider is shown before and after the message.
      */
-    public void showEndingMessage() {
-        showDivider();
-        System.out.println("     Bye. Hope to see you again soon!");
-        showDivider();
+    public String showEndingMessage() {
+        return "     Bye. Hope to see you again soon!\n";
     }
 
-
-    public void showTaskAdded(Task task, TaskList taskList) {
-        System.out.println("     " + "Got it. I've added this task:");
-
-        System.out.println("       " + task.toString());
+    public String showTaskAdded(Task task, TaskList taskList) {
         taskList.addElem(task);
-        System.out.printf("     Now you have %d tasks in the list.\n", taskList.getSize());
+        return "     " + "Got it. I've added this task:\n"
+                + "       " + task.toString() + "\n"
+                + "     Now you have " + taskList.getSize() + " tasks in the list.\n";
 
+    }
+
+    public void println(String str) {
+        System.out.println(str);
     }
 
 }
