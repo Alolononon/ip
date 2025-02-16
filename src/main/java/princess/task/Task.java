@@ -14,6 +14,7 @@ public class Task {
      * @param taskName The name or description of the task.
      */
     public Task(String taskName) {
+        assert taskName != null && !taskName.trim().isEmpty() : "Task name cannot be null or empty";
         this.taskName = taskName;
         this.isDone = false;
     }
@@ -24,6 +25,7 @@ public class Task {
      * @return The task name.
      */
     public String getTaskName() {
+        assert this.taskName != null : "Task name should never be null";
         return this.taskName;
     }
 
