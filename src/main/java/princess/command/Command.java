@@ -6,13 +6,13 @@ import princess.ui.UI;
 import java.util.ArrayList;
 
 
-
 /**
  * Handles different user commands and executes the corresponding actions.
  */
 public class Command {
 
-    UI ui;
+    public static final String NO_MATCHING_TASKS_FOUND_MESSAGE = "     No matching tasks found.\n";
+    private UI ui;
     private boolean isExit = false;
     private String princessResponse = "";
 
@@ -36,49 +36,48 @@ public class Command {
         assert input != null && !input.trim().isEmpty() : "Input cannot be null or empty";
         assert taskList != null : "TaskList cannot be null";
         princessResponse = "";
+        // Convert input into CommandType
+        String[] inputParts = input.split(" ");
+        CommandType commandType = CommandType.fromString(inputParts[0]);
 
         try {
-            String[] inputParts = input.split(" ");
-            String code = inputParts[0];
-
-            // Exit the application
-            if (input.equals("bye")) {
-                isExit = true;
-                princessResponse += ui.showEndingMessage(); // show exiting message when closing app
-                return princessResponse;
-            }
 
             // Commands
-            if (input.equals("list")) {
+            switch (commandType) {
+            // Exit the application
+            case BYE:
+                handleExitCommand();
+                break;
+            case LIST:
                 handleListCommand(taskList);
-            } else if (code.equals("delete")) {
+                break;
+            case DELETE:
                 handleDeleteCommand(taskList, inputParts);
-            } else if (code.equals("mark")) {
+                break;
+            case MARK:
                 handleMarkCommand(taskList, inputParts);
-            } else if (code.equals("unmark")) {
+                break;
+            case UNMARK:
                 handleUnmarkCommand(taskList, inputParts);
-            } else if (code.equals("todo") || code.equals("deadline") || code.equals("event")) {
-                try {
-                    if (code.equals("todo")) { //adding  new item into storage
-                        handleAddToDo(inputParts, input, taskList);
-                    } else if (code.equals("deadline")) {
-                        handleAddDeadline(inputParts, input, taskList);
-                    } else if (code.equals("event")) {
-                        handleAddEvent(inputParts, input, taskList);
-                    }
-                } catch (IllegalArgumentException e) { // throw error for invalid date format
-                    princessResponse += "     " + e.getMessage() + "\n";
-                    princessResponse += "     " + "try again\n";
-                }
-            } else if (code.equals("help")) {
+                break;
+            case TODO:
+                handleAddToDo(inputParts, input, taskList);
+                break;
+            case DEADLINE:
+                handleAddDeadline(inputParts, input, taskList);
+                break;
+            case EVENT:
+                handleAddEvent(inputParts, input, taskList);
+                break;
+            case HELP:
                 princessResponse += ui.showHelpMessage(); // Display help message
-            } else if (code.equals("find")) {
+                break;
+            case FIND:
                 handleFindFunction(inputParts, input, taskList);
-            } else {
-                throw new PrincessException("     " + "OH NOOO!!! I don't understand what that means... "
-                        + "type 'help' for help");
+                break;
+            case INVALID:
+                throw new PrincessException(ui.showInvalidCommandMessage());
             }
-
 
 
         } catch (PrincessException e) {
@@ -88,8 +87,22 @@ public class Command {
         return princessResponse;
     }
 
+    /**
+     * Checks if the program should exit.
+     *
+     * @return {@code true} if the exit command has been issued, otherwise {@code false}.
+     */
     public boolean isExit() {
         return isExit;
+    }
+
+    /**
+     * Handles the exit command by setting the exit flag and displaying the exit message.
+     * This method marks the application as ready to terminate.
+     */
+    private void handleExitCommand() {
+        isExit = true;
+        princessResponse += ui.showEndingMessage(); // show exiting message when closing app
     }
 
     /**
@@ -100,11 +113,16 @@ public class Command {
     private void handleListCommand(TaskList taskList) {
         assert taskList != null : "TaskList should not be null when listing";
         //listing out all tasks
-        princessResponse += "     Here are the tasks in your list for your Princess!\n";
-        int num = 1;
+        princessResponse += UI.MESSAGE_LIST_HEADER;
         if (taskList.isEmpty()) {
-            princessResponse += "     " + "      ---there is nothing in your list---\n";
+            princessResponse += UI.MESSAGE_EMPTY_LIST;
+        } else {
+            generateTaskListString(taskList);
         }
+    }
+
+    private void generateTaskListString(TaskList taskList) {
+        int num = 1;
         for (Task elem : taskList.getTasks()) {
             princessResponse += "     " + Integer.toString(num++) + "." + elem.toString() + "\n";
         }
@@ -120,19 +138,30 @@ public class Command {
     private void handleDeleteCommand(TaskList taskList, String[] inputParts) throws PrincessException {
         assert taskList != null : "TaskList should not be null when deleting";
         // Delete a task
+        validateTaskIndex(taskList, inputParts);
+        int elemNum = Integer.parseInt(inputParts[1]);
+        Task taskToRemove = taskList.getElem(elemNum - 1); // Retrieve task before removal
+        showDeleteMessage(taskList, taskToRemove, elemNum);
+        showTaskCountMessage(taskList);
+    }
+
+    private void showDeleteMessage(TaskList taskList, Task taskToRemove, int elemNum) {
+        princessResponse += "     Alrighty, Princess have removed this task:\n"
+                + "       " + taskToRemove.toString() + "\n";
+        taskList.removeElem(elemNum - 1);
+    }
+
+    private void showTaskCountMessage(TaskList taskList) {
+        princessResponse += "     Now you have " + taskList.getSize() + " tasks in the list.\n";
+    }
+
+    private static void validateTaskIndex(TaskList taskList, String[] inputParts) throws PrincessException {
         if (inputParts.length < 2) {
             throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
         } else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1
                 || Integer.parseInt(inputParts[1]) > taskList.getSize()) {
             throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
         }
-
-        int elemNum = Integer.parseInt(inputParts[1]);
-        assert elemNum >= 1 && elemNum <= taskList.getSize() : "Invalid task index for deletion";
-        princessResponse += "     Alrighty, Princess have removed this task:\n"
-                + "       " + taskList.getElem(elemNum - 1).toString() + "\n";
-        taskList.removeElem(elemNum - 1);
-        princessResponse += "     Now you have " + taskList.getSize() + " tasks in the list.\n";
     }
 
     /**
@@ -145,18 +174,18 @@ public class Command {
     private void handleMarkCommand(TaskList taskList, String[] inputParts) throws PrincessException {
         assert taskList != null : "TaskList should not be null when marking a task";
         // Mark a task as done
-        if (inputParts.length < 2)
-            throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
-        else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1 ||
-                Integer.parseInt(inputParts[1]) > taskList.getSize())
-            throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
+        validateTaskIndex(taskList, inputParts);
 
         int elemNum = Integer.parseInt(inputParts[1]);
         assert elemNum >= 1 && elemNum <= taskList.getSize() : "Invalid task index for marking";
-        Task elem = taskList.getElem(elemNum - 1);
-        elem.markTask();
+        Task taskToMark = taskList.getElem(elemNum - 1);
+        taskToMark.markTask();
+        showTaskMarkedMessage(taskToMark);
+    }
+
+    private void showTaskMarkedMessage(Task taskToMark) {
         princessResponse += "     Nice! You are the best! Princess have help you marked this task as done:\n"
-                          + "       " + elem.toString() + "\n";
+                          + "       " + taskToMark.toString() + "\n";
     }
 
     /**
@@ -169,17 +198,16 @@ public class Command {
     private void handleUnmarkCommand(TaskList taskList, String[] inputParts) throws PrincessException {
         assert taskList != null : "TaskList should not be null when unmarking a task";
         // Mark a task as undone
-        if (inputParts.length < 2) {
-            throw new PrincessException("     " + "OH NOOO!!! There is missing value. Please input a value.");
-        } else if (!isInteger(inputParts[1]) || Integer.parseInt(inputParts[1]) < 1
-                || Integer.parseInt(inputParts[1]) > taskList.getSize()) {
-            throw new PrincessException("     " + "OH NOOO!!! INVALID input!! Please input a proper value.");
-        }
+        validateTaskIndex(taskList, inputParts);
 
         int elemNum = Integer.parseInt(inputParts[1]);
         assert elemNum >= 1 && elemNum <= taskList.getSize() : "Invalid task index for unmarking";
-        Task elem = taskList.getElem(elemNum - 1);
-        elem.unmarkTask();
+        Task taskToUnmark = taskList.getElem(elemNum - 1);
+        taskToUnmark.unmarkTask();
+        showTaskUnmarkedMessage(taskToUnmark);
+    }
+
+    private void showTaskUnmarkedMessage(Task elem) {
         princessResponse += "     Whattt?!?! Alright... Princess have marked this task as undone:\n"
                           + "       " + elem.toString() + "\n";
     }
@@ -194,13 +222,24 @@ public class Command {
      */
     private void handleAddToDo(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
-        if (inputParts.length < 2 || input.substring(5).trim().isEmpty()) {
+        validateTaskDescription(inputParts);
+        String taskName = extractTaskName(input);
+        Task newTask = new Todo(taskName);
+        showTaskAddedMessage(taskList, newTask);
+    }
+
+    private void showTaskAddedMessage(TaskList taskList, Task newTask) {
+        princessResponse += ui.showTaskAdded(newTask, taskList);
+    }
+
+    private static String extractTaskName(String input) {
+        return input.substring(5);
+    }
+
+    private static void validateTaskDescription(String[] inputParts) throws PrincessException {
+        if (inputParts.length < 2) {
             throw new PrincessException("     " + "OH NOOO!!! Sweetheart, There is no task description!");
         }
-
-        String taskname = input.substring(5);
-        Task newTask = new Todo(taskname);
-        princessResponse += ui.showTaskAdded(newTask, taskList);
     }
 
     /**
@@ -213,18 +252,37 @@ public class Command {
      */
     private void handleAddDeadline(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
+        validateDeadlineInputFormat(inputParts, input);
+        extractDeadlineDetails deadlineDetails = getDeadlineDetails(input);
+        try {
+            Task newTask = new Deadline(deadlineDetails.taskName(), deadlineDetails.by());
+            showTaskAddedMessage(taskList, newTask);
+        } catch (IllegalArgumentException e) { // throw error for invalid date format
+            showInvalidDateInputMessage(e);
+        }
+    }
+
+    private void showInvalidDateInputMessage(IllegalArgumentException e) {
+        princessResponse += "     " + e.getMessage() + "\n"
+                          + "     " + "try again\n";
+    }
+
+    private static extractDeadlineDetails getDeadlineDetails(String input) {
+        String[] stringArr = input.substring(9).split("/by ");
+        String taskName = stringArr[0];
+        String by = stringArr[1];
+        extractDeadlineDetails result = new extractDeadlineDetails(taskName, by);
+        return result;
+    }
+
+    private record extractDeadlineDetails(String taskName, String by) {
+    }
+
+    private static void validateDeadlineInputFormat(String[] inputParts, String input) throws PrincessException {
         if (inputParts.length < 4 || !input.contains("/by")) {
             throw new PrincessException("     " + "OH NOOO!!! Sweetheart, please follow the deadline format: "
                     + "deadline [task name] /by [deadline]");
         }
-
-        String[] stringArr = input.substring(9).split("/by ");
-
-        String taskName = stringArr[0];
-        String by = stringArr[1];
-
-        Task newTask = new Deadline(taskName, by);
-        princessResponse += ui.showTaskAdded(newTask, taskList);
     }
 
     /**
@@ -237,20 +295,33 @@ public class Command {
      */
     private void handleAddEvent(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
+        validateEventInputFormat(inputParts, input);
+        GetEventDetails eventDetails = getEventDetails(input);
+        try {
+            Task newTask = new Event(eventDetails.taskName(), eventDetails.from(), eventDetails.to());
+            showTaskAddedMessage(taskList, newTask);
+        } catch (IllegalArgumentException e) { // throw error for invalid date format
+            showInvalidDateInputMessage(e);
+        }
+    }
+
+    private static GetEventDetails getEventDetails(String input) {
+        String[] stringArr = input.substring(6).split("/from | /to ");
+        String taskName = stringArr[0];
+        String from = stringArr[1];
+        String to = stringArr[2];
+        GetEventDetails eventDetails = new GetEventDetails(taskName, from, to);
+        return eventDetails;
+    }
+
+    private record GetEventDetails(String taskName, String from, String to) {
+    }
+
+    private static void validateEventInputFormat(String[] inputParts, String input) throws PrincessException {
         if (inputParts.length < 6 || !input.contains("/from") || !input.contains("/to")) {
             throw new PrincessException("     " + "OH NOOO!!! Sweetheart, please follow the deadline format: "
                     + "event [taskname] /from [date/time] /to [date/time]");
         }
-
-        String[] stringArr = input.substring(6).split("/from | /to ");
-
-        String taskName = stringArr[0];
-        String from = stringArr[1];
-        String to = stringArr[2];
-
-
-        Task newTask = new Event(taskName, from, to);
-        princessResponse += ui.showTaskAdded(newTask, taskList);
     }
 
 
@@ -264,26 +335,41 @@ public class Command {
      */
     private void handleFindFunction(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         assert taskList != null : "TaskList should not be null when searching for tasks";
-
-        if (inputParts.length < 2)
-            throw new PrincessException("     " + "OH NOOO!!! There is missing keyword. Please input a keyword to search.");
-
-        String keyword = input.substring(5).toLowerCase();
+        validateFindInput(inputParts);
+        String keyword = extractKeyword(input);
         ArrayList<Task> matchingTasks = new ArrayList<>();
+        filterMatchingTasks(taskList, keyword, matchingTasks);
+        if (matchingTasks.isEmpty()) {
+            princessResponse += NO_MATCHING_TASKS_FOUND_MESSAGE;
+        } else {
+            generateMatchingTasksMessage(matchingTasks);
+        }
+    }
 
+    private void generateMatchingTasksMessage(ArrayList<Task> matchingTasks) {
+        princessResponse += "     Here are the matching tasks in your list:\n";
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            princessResponse += "     " + (i + 1) + "." + matchingTasks.get(i) + "\n";
+        }
+    }
+
+    private static void filterMatchingTasks(TaskList taskList, String keyword, ArrayList<Task> matchingTasks) {
         for (Task eachtask : taskList.getTasks()) {
             if (eachtask.getTaskName().toLowerCase().contains(keyword)) {
                 matchingTasks.add(eachtask);
             }
         }
+    }
 
-        if (matchingTasks.isEmpty()) {
-            princessResponse += "     No matching tasks found.\n";
-        } else {
-            princessResponse += "     Here are the matching tasks in your list:\n";
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                princessResponse += "     " + (i + 1) + "." + matchingTasks.get(i) + "\n";
-            }
+    private static String extractKeyword(String input) {
+        String keyword = input.substring(5).toLowerCase();
+        return keyword;
+    }
+
+    private static void validateFindInput(String[] inputParts) throws PrincessException {
+        if (inputParts.length < 2) {
+            throw new PrincessException("     "
+                    + "OH NOOO!!! There is missing keyword. Please input a keyword to search.");
         }
     }
 
