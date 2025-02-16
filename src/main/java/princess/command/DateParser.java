@@ -17,21 +17,21 @@ public class DateParser {
 
     // List of supported date and time formats
     private static final List<DateTimeFormatter> DATE_FORMATS = List.of(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd"),        // 2000-03-01
-            DateTimeFormatter.ofPattern("MMM dd yyyy"),     // Mar 01 2000
-            DateTimeFormatter.ofPattern("dd-MM-yyyy"),        // 01-03-2000
+            DateTimeFormatter.ofPattern("yyyy-MM-dd"), // 2000-03-01
+            DateTimeFormatter.ofPattern("MMM dd yyyy"), // Mar 01 2000
+            DateTimeFormatter.ofPattern("dd-MM-yyyy"), // 01-03-2000
             DateTimeFormatter.ofPattern("dd/MM/yyyy"),
 
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"),   // 2000-03-01 1800
-            DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm"),   // 01-03-2000 1800
-            DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"),  // Mar 01 2000 1800
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm"),   // 01/03/2000 1800
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"), // 2000-03-01 1800
+            DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm"), // 01-03-2000 1800
+            DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"), // Mar 01 2000 1800
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm"), // 01/03/2000 1800
 
-            DateTimeFormatter.ofPattern("yyyy-MM-dd h:mma"),   // 2000-03-01 4pm
-            DateTimeFormatter.ofPattern("dd-MM-yyyy h:mma"),   // 01-03-2000 4pm
-            DateTimeFormatter.ofPattern("MMM dd yyyy h:mma"),  // Mar 01 2000 4pm
-            DateTimeFormatter.ofPattern("dd/MM/yyyy h:mma"),    // 01/03/2000 4pm
-            DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma")  // Mar 01 2000, 4pm
+            DateTimeFormatter.ofPattern("yyyy-MM-dd h:mma"), // 2000-03-01 4pm
+            DateTimeFormatter.ofPattern("dd-MM-yyyy h:mma"), // 01-03-2000 4pm
+            DateTimeFormatter.ofPattern("MMM dd yyyy h:mma"), // Mar 01 2000 4pm
+            DateTimeFormatter.ofPattern("dd/MM/yyyy h:mma"), // 01/03/2000 4pm
+            DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma") // Mar 01 2000, 4pm
 
     );
 
@@ -46,6 +46,7 @@ public class DateParser {
      * @throws IllegalArgumentException if the input doesn't match any supported format
      */
     public static LocalDateTime parseDateTime(String input) {
+        input = input.trim(); // Remove unnecessary spaces
         for (DateTimeFormatter formatter : DATE_FORMATS) {
             try {
                 if (input.length() > 11) { // If time is included

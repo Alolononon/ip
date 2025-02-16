@@ -20,6 +20,8 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by) {
         super(description);
+        assert description != null && !description.trim().isEmpty() : "Deadline description cannot be null or empty";
+        assert by != null && !by.trim().isEmpty() : "Deadline date/time cannot be null or empty";
         this.by = DateParser.parseDateTime(by);
     }
 
@@ -29,6 +31,7 @@ public class Deadline extends Task {
      * @return the deadline as a formatted string
      */
     public String getBy() {
+        assert by != null : "Deadline date/time should never be null";
         return by.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
     }
 

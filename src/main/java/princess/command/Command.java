@@ -1,7 +1,6 @@
 package princess.command;
 
 import princess.PrincessException;
-
 import princess.task.*;
 import princess.ui.UI;
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class Command {
      * @param ui The UI to interact with the user.
      */
     public Command(UI ui) {
+        assert ui != null : "UI instance cannot be null";
         this.ui = ui;
     }
 
@@ -33,6 +33,8 @@ public class Command {
      * @throws Exception If an error occurs during command execution.
      */
     public String execute(String input, TaskList taskList) throws Exception {
+        assert input != null && !input.trim().isEmpty() : "Input cannot be null or empty";
+        assert taskList != null : "TaskList cannot be null";
         princessResponse = "";
         // Convert input into CommandType
         String[] inputParts = input.split(" ");
@@ -109,6 +111,7 @@ public class Command {
      * @param taskList The list of tasks to be displayed.
      */
     private void handleListCommand(TaskList taskList) {
+        assert taskList != null : "TaskList should not be null when listing";
         //listing out all tasks
         princessResponse += UI.MESSAGE_LIST_HEADER;
         if (taskList.isEmpty()) {
@@ -125,7 +128,6 @@ public class Command {
         }
     }
 
-
     /**
      * Deletes a task from the task list.
      *
@@ -134,6 +136,7 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleDeleteCommand(TaskList taskList, String[] inputParts) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when deleting";
         // Delete a task
         validateTaskIndex(taskList, inputParts);
         int elemNum = Integer.parseInt(inputParts[1]);
@@ -169,10 +172,12 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleMarkCommand(TaskList taskList, String[] inputParts) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when marking a task";
         // Mark a task as done
         validateTaskIndex(taskList, inputParts);
 
         int elemNum = Integer.parseInt(inputParts[1]);
+        assert elemNum >= 1 && elemNum <= taskList.getSize() : "Invalid task index for marking";
         Task taskToMark = taskList.getElem(elemNum - 1);
         taskToMark.markTask();
         showTaskMarkedMessage(taskToMark);
@@ -191,10 +196,12 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleUnmarkCommand(TaskList taskList, String[] inputParts) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when unmarking a task";
         // Mark a task as undone
         validateTaskIndex(taskList, inputParts);
 
         int elemNum = Integer.parseInt(inputParts[1]);
+        assert elemNum >= 1 && elemNum <= taskList.getSize() : "Invalid task index for unmarking";
         Task taskToUnmark = taskList.getElem(elemNum - 1);
         taskToUnmark.unmarkTask();
         showTaskUnmarkedMessage(taskToUnmark);
@@ -214,6 +221,7 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleAddToDo(String[] inputParts, String input, TaskList taskList) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateTaskDescription(inputParts);
         String taskName = extractTaskName(input);
         Task newTask = new Todo(taskName);
@@ -243,6 +251,7 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleAddDeadline(String[] inputParts, String input, TaskList taskList) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateDeadlineInputFormat(inputParts, input);
         extractDeadlineDetails deadlineDetails = getDeadlineDetails(input);
         try {
@@ -285,6 +294,7 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleAddEvent(String[] inputParts, String input, TaskList taskList) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateEventInputFormat(inputParts, input);
         GetEventDetails eventDetails = getEventDetails(input);
         try {
@@ -324,6 +334,7 @@ public class Command {
      * @throws PrincessException If the input is invalid.
      */
     private void handleFindFunction(String[] inputParts, String input, TaskList taskList) throws PrincessException {
+        assert taskList != null : "TaskList should not be null when searching for tasks";
         validateFindInput(inputParts);
         String keyword = extractKeyword(input);
         ArrayList<Task> matchingTasks = new ArrayList<>();

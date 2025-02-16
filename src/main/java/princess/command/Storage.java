@@ -22,6 +22,7 @@ public class Storage {
     private String filePath;
 
     public Storage(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path cannot be null or empty";
         this.filePath = filePath;
         ensureFileExists();
     }
@@ -33,10 +34,9 @@ public class Storage {
      *
      */
     public void ensureFileExists() {
-
+        assert filePath != null : "File path should not be null";
         File f = new File(filePath);
         if (!f.exists()) {
-//            System.out.println("File does not exist");
             File folder = f.getParentFile(); // Get "data/" folder
 
             if (!folder.exists()) {
@@ -45,7 +45,7 @@ public class Storage {
             if (!f.exists()) {
                 try {
                     f.createNewFile(); // Create "saved_tasks.txt" if missing
-//                    System.out.println("Created file: " + f.toString());
+                    assert f.exists() : "File should exist after creation";
                 } catch (IOException e) {
                     System.out.println("Error creating file: " + e.getMessage());
                 }
@@ -61,6 +61,7 @@ public class Storage {
      * @throws FileNotFoundException If the file does not exist.
      */
     public void printFileContents(String filePath) throws FileNotFoundException {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path cannot be null or empty";
         File f = new File(filePath); // create a File for the given file path
         Scanner s = new Scanner(f); // create a Scanner using the File as the source
         while (s.hasNext()) {
@@ -75,6 +76,7 @@ public class Storage {
      *
      */
     public ArrayList<Task> loadTasksFromFile() {
+        assert filePath != null : "File path should not be null";
         ArrayList<Task> storage = new ArrayList<>();
         File file = new File(filePath);
         try {
@@ -130,6 +132,7 @@ public class Storage {
      * @throws IOException If an error occurs while writing to the file.
      */
     public void writeToFile(ArrayList<Task> storage) throws IOException {
+        assert filePath != null : "File path should not be null";
         FileWriter fw = new FileWriter(filePath);
         for (Task task : storage) {
             if (task instanceof Todo) {
@@ -142,7 +145,6 @@ public class Storage {
                         + " | " + ((Event) task).getFrom() + " | " + ((Event) task).getTo() + "\n");
             }
         }
-//        fw.write(textToAdd);
         fw.close();
     }
 }

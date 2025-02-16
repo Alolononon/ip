@@ -70,11 +70,13 @@ public class UI {
     }
 
     public String showTaskAdded(Task task, TaskList taskList) {
+        assert task != null : "Task cannot be null";
+        assert taskList != null : "TaskList cannot be null";
+
         taskList.addElem(task);
         return "     " + "Got it. I've added this task:\n"
                 + "       " + task.toString() + "\n"
                 + "     Now you have " + taskList.getSize() + " tasks in the list.\n";
-
     }
 
     public String showInvalidCommandMessage() {
