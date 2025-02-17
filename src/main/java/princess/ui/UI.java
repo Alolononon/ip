@@ -47,9 +47,10 @@ public class UI {
                 + "       delete [index]\n"
                 + "       mark [index]\n"
                 + "       unmark [index]\n"
-                + "       todo [taskname]\n"
-                + "       deadline [taskname] /by [deadline]\n"
-                + "       event [taskname] /from [date/time] /to [date/time]\n"
+                + "       todo [taskname] /at [place]\n"
+                + "       deadline [taskname] /by [deadline] /at [place]\n"
+                + "       event [taskname] /from [date/time] /to [date/time] /at [place]\n"
+                + "               (note: /at command is optional)\n"
                 + "       find [keyword]\n"
                 + "       bye";
     }

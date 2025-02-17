@@ -41,7 +41,6 @@ public class Command {
         CommandType commandType = CommandType.fromString(inputParts[0]);
 
         try {
-
             // Commands
             switch (commandType) {
             // Exit the application
@@ -224,8 +223,19 @@ public class Command {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateTaskDescription(inputParts);
         String taskName = extractTaskName(input);
+        String placeName = extractPlaceName(input);
         Task newTask = new Todo(taskName);
+        newTask.setPlace(placeName);
         showTaskAddedMessage(taskList, newTask);
+    }
+
+    private static String extractPlaceName(String input) {
+        String[] inputArr = input.split(" /at ");
+        if (inputArr.length < 2) {
+            return null;
+        } else {
+            return inputArr[1];
+        }
     }
 
     private void showTaskAddedMessage(TaskList taskList, Task newTask) {
@@ -233,7 +243,7 @@ public class Command {
     }
 
     private static String extractTaskName(String input) {
-        return input.substring(5);
+        return input.substring(5).split(" /at ")[0];
     }
 
     private static void validateTaskDescription(String[] inputParts) throws PrincessException {
@@ -254,8 +264,10 @@ public class Command {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateDeadlineInputFormat(inputParts, input);
         extractDeadlineDetails deadlineDetails = getDeadlineDetails(input);
+        String placeName = extractPlaceName(input);
         try {
             Task newTask = new Deadline(deadlineDetails.taskName(), deadlineDetails.by());
+            newTask.setPlace(placeName);
             showTaskAddedMessage(taskList, newTask);
         } catch (IllegalArgumentException e) { // throw error for invalid date format
             showInvalidDateInputMessage(e);
@@ -268,7 +280,7 @@ public class Command {
     }
 
     private static extractDeadlineDetails getDeadlineDetails(String input) {
-        String[] stringArr = input.substring(9).split("/by ");
+        String[] stringArr = input.substring(9).split("/by | /at");
         String taskName = stringArr[0];
         String by = stringArr[1];
         extractDeadlineDetails result = new extractDeadlineDetails(taskName, by);
@@ -297,8 +309,10 @@ public class Command {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateEventInputFormat(inputParts, input);
         GetEventDetails eventDetails = getEventDetails(input);
+        String placeName = extractPlaceName(input);
         try {
             Task newTask = new Event(eventDetails.taskName(), eventDetails.from(), eventDetails.to());
+            newTask.setPlace(placeName);
             showTaskAddedMessage(taskList, newTask);
         } catch (IllegalArgumentException e) { // throw error for invalid date format
             showInvalidDateInputMessage(e);
@@ -306,7 +320,7 @@ public class Command {
     }
 
     private static GetEventDetails getEventDetails(String input) {
-        String[] stringArr = input.substring(6).split("/from | /to ");
+        String[] stringArr = input.substring(6).split("/from | /to | /at");
         String taskName = stringArr[0];
         String from = stringArr[1];
         String to = stringArr[2];

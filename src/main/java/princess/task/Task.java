@@ -6,6 +6,7 @@ package princess.task;
 public class Task {
     private String taskName;
     private boolean isDone;
+    private Place place;
 
     /**
      * Constructs a new Task with the specified name.
@@ -17,6 +18,7 @@ public class Task {
         assert taskName != null && !taskName.trim().isEmpty() : "Task name cannot be null or empty";
         this.taskName = taskName;
         this.isDone = false;
+        this.place = new Place();
     }
 
     /**
@@ -51,6 +53,16 @@ public class Task {
     public void unmarkTask() {
         this.isDone = false;
     }
+
+
+    public void setPlace(String place) {
+        this.place.setPlaceName(place);
+    }
+
+    public Place getPlace() {
+        return this.place;
+    }
+
 
     /**
      * Returns the string representation of the task,
