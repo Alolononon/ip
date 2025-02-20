@@ -1,9 +1,13 @@
 package princess.command;
+import java.util.ArrayList;
 
 import princess.PrincessException;
-import princess.task.*;
+import princess.task.Deadline;
+import princess.task.Event;
+import princess.task.Task;
+import princess.task.TaskList;
+import princess.task.Todo;
 import princess.ui.UI;
-import java.util.ArrayList;
 
 
 /**
@@ -75,6 +79,7 @@ public class Command {
                 handleFindFunction(inputParts, input, taskList);
                 break;
             case INVALID:
+            default:
                 throw new PrincessException(ui.showInvalidCommandMessage());
             }
 
@@ -263,7 +268,7 @@ public class Command {
     private void handleAddDeadline(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
         validateDeadlineInputFormat(inputParts, input);
-        extractDeadlineDetails deadlineDetails = getDeadlineDetails(input);
+        ExtractDeadlineDetails deadlineDetails = getDeadlineDetails(input);
         String placeName = extractPlaceName(input);
         try {
             Task newTask = new Deadline(deadlineDetails.taskName(), deadlineDetails.by());
@@ -279,15 +284,15 @@ public class Command {
                           + "     " + "try again\n";
     }
 
-    private static extractDeadlineDetails getDeadlineDetails(String input) {
+    private static ExtractDeadlineDetails getDeadlineDetails(String input) {
         String[] stringArr = input.substring(9).split("/by | /at");
         String taskName = stringArr[0];
         String by = stringArr[1];
-        extractDeadlineDetails result = new extractDeadlineDetails(taskName, by);
+        ExtractDeadlineDetails result = new ExtractDeadlineDetails(taskName, by);
         return result;
     }
 
-    private record extractDeadlineDetails(String taskName, String by) {
+    private record ExtractDeadlineDetails(String taskName, String by) {
     }
 
     private static void validateDeadlineInputFormat(String[] inputParts, String input) throws PrincessException {

@@ -1,9 +1,9 @@
 package princess.task;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import princess.command.DateParser;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a task with a deadline.

@@ -70,6 +70,14 @@ public class UI {
         return "     Bye. Hope to see you again soon!\n";
     }
 
+    /**
+     * Adds a task to the specified <code>TaskList</code> and returns a message indicating the task was added.
+     *
+     * @param task     the task to be added
+     * @param taskList the task list to which the task will be added
+     * @return a string confirming the addition of the task and the updated task count
+     * @throws AssertionError if <code>task</code> or <code>taskList</code> is null
+     */
     public String showTaskAdded(Task task, TaskList taskList) {
         assert task != null : "Task cannot be null";
         assert taskList != null : "TaskList cannot be null";
@@ -80,11 +88,21 @@ public class UI {
                 + "     Now you have " + taskList.getSize() + " tasks in the list.\n";
     }
 
+    /**
+     * Returns a message indicating that the user's command was invalid.
+     *
+     * @return a string containing the invalid command message
+     */
     public String showInvalidCommandMessage() {
         return "     " + "OH NOOO!!! I don't understand what that means... "
                 + "type 'help' for help";
     }
 
+    /**
+     * Prints the specified string to the console.
+     *
+     * @param str the string to be printed
+     */
     public void println(String str) {
         System.out.println(str);
     }

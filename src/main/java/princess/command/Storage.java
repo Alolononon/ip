@@ -1,16 +1,16 @@
 package princess.command;
-
-import princess.task.Deadline;
-import princess.task.Event;
-import princess.task.Task;
-import princess.task.Todo;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import princess.task.Deadline;
+import princess.task.Event;
+import princess.task.Task;
+import princess.task.Todo;
+
 
 
 /**
@@ -19,8 +19,18 @@ import java.util.Scanner;
  */
 public class Storage {
 
+    /**
+     * The path to the file where tasks are stored.
+     */
     private String filePath;
 
+    /**
+     * Constructs a new <code>Storage</code> object with the specified file path.
+     * Automatically ensures the file and necessary directories exist.
+     *
+     * @param filePath the path to the file where tasks will be read from and written to
+     * @throws AssertionError if <code>filePath</code> is null or empty
+     */
     public Storage(String filePath) {
         assert filePath != null && !filePath.trim().isEmpty() : "File path cannot be null or empty";
         this.filePath = filePath;
@@ -83,7 +93,7 @@ public class Storage {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
-                String lineArr[] = line.split(" \\| ");
+                String[] lineArr = line.split(" \\| ");
 
                 if (lineArr.length < 3) {
                     System.out.println("Skipping invalid line: " + line);
@@ -100,15 +110,21 @@ public class Storage {
                     task = new Todo(description);
                     break;
                 case "D":
-                    if (lineArr.length < 4)
+                    if (lineArr.length < 4) {
                         task = null; // Ensure valid deadline format
+                        break;
+                    }
                     task = new Deadline(description, lineArr[3]); // parts[3] is due date
                     break;
                 case "E":
-                    if (lineArr.length < 5)
+                    if (lineArr.length < 5) {
                         task = null; // Ensure valid event format
+                        break;
+                    }
                     task = new Event(description, lineArr[3], lineArr[4]); // parts[3] = from, parts[4] = to
                     break;
+                default:
+                    task = null;
                 }
 
                 if (task != null) {
