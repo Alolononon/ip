@@ -226,7 +226,7 @@ public class Command {
      */
     private void handleAddToDo(String[] inputParts, String input, TaskList taskList) throws PrincessException {
         assert taskList != null : "TaskList should not be null when adding a ToDo";
-        validateTaskDescription(inputParts);
+        validateTaskDescription(input);
         String taskName = extractTaskName(input);
         String placeName = extractPlaceName(input);
         Task newTask = new Todo(taskName);
@@ -234,13 +234,30 @@ public class Command {
         showTaskAddedMessage(taskList, newTask);
     }
 
-    private static String extractPlaceName(String input) {
-        String[] inputArr = input.split(" /at ");
+    private static void validateTaskDescription(String input) throws PrincessException {
+        String[] inputArr = input.split("/at")[0].trim().split(" ");
         if (inputArr.length < 2) {
-            return null;
-        } else {
-            return inputArr[1];
+            throw new PrincessException("     " + "OH NOOO!!! Sweetheart, There is no task description!");
         }
+    }
+
+    private static void validatePlaceName(String input) throws PrincessException {
+        if (input.contains("/at")) {
+            String[] inputArray = input.trim().split("/at");
+            if (inputArray.length < 2) {
+                throw new PrincessException("     " + "OH NOOO!!! Sweetheart, after putting \"/at\", "
+                        + "there is no place name!");
+            }
+        }
+    }
+
+    private static String extractPlaceName(String input) throws PrincessException {
+        if (!input.contains("/at")) {
+            return null;
+        }
+        validatePlaceName(input);
+        String placeName = input.split("/at")[1].trim();
+        return placeName;
     }
 
     private void showTaskAddedMessage(TaskList taskList, Task newTask) {
@@ -249,12 +266,6 @@ public class Command {
 
     private static String extractTaskName(String input) {
         return input.substring(5).split(" /at ")[0];
-    }
-
-    private static void validateTaskDescription(String[] inputParts) throws PrincessException {
-        if (inputParts.length < 2) {
-            throw new PrincessException("     " + "OH NOOO!!! Sweetheart, There is no task description!");
-        }
     }
 
     /**
