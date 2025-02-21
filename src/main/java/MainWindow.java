@@ -1,3 +1,5 @@
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -5,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import princess.Princess;
 
 /**
@@ -33,18 +36,18 @@ public class MainWindow extends AnchorPane {
         // Display welcome message from Princess
         if (princess != null) {
             dialogContainer.getChildren().add(
-                    DialogBox.getDukeDialog(princess.getWelcomeResponse(), princessImage)
+                    DialogBox.getPrincessDialog(princess.getWelcomeResponse(), princessImage)
             );
         }
     }
 
-    /** Injects the Duke instance */
-    public void setDuke(Princess p) {
+    /** Injects the Princess instance */
+    public void setPrincess(Princess p) {
         princess = p;
 
         // Show the welcome message when the bot is set
         dialogContainer.getChildren().add(
-                DialogBox.getDukeDialog(princess.getWelcomeResponse(), princessImage)
+                DialogBox.getPrincessDialog(princess.getWelcomeResponse(), princessImage)
         );
     }
 
@@ -53,8 +56,8 @@ public class MainWindow extends AnchorPane {
 
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Creates two dialog boxes, one echoing user input and the other containing Princess's reply and then appends them
+     * to the dialog container. Clears the user input after processing.
      */
     @FXML
     private void handleUserInput() {
@@ -62,8 +65,17 @@ public class MainWindow extends AnchorPane {
         String response = princess.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, princessImage)
+                DialogBox.getPrincessDialog(response, princessImage)
         );
         userInput.clear();
+
+        // solution below was retrieved from chatgpt at 21 feb 2025
+        // original prompt: help me close a window after a slight delay
+        // If user types "bye", delay closing the application
+        if (princess.isExit()) {
+            PauseTransition delay = new PauseTransition(Duration.seconds(2)); // 2-second delay
+            delay.setOnFinished(event -> Platform.exit()); // Close app after delay
+            delay.play();
+        }
     }
 }

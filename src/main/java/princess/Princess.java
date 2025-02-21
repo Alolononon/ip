@@ -62,6 +62,7 @@ public class Princess {
                     break;
                 }
                 System.out.print(ui.showEndingDivider()); // show ending divider after every action
+                storeTasklistToFile();
 
 
             }
@@ -73,14 +74,17 @@ public class Princess {
             System.out.print(ui.showDivider());
         }
 
+
+
+    }
+
+    private void storeTasklistToFile() {
         // Save tasks to file before exiting
         try {
             storage.writeToFile(taskList.getTasks());
         } catch (Exception e) {
             System.out.println("There was an error saving your tasks: " + e.getMessage());
         }
-
-
     }
 
 
@@ -101,9 +105,19 @@ public class Princess {
             output += "Oops! The princess has encountered a royal error. "
                     + "Time to call in the knights of debugging! \n Terminal error: " + e.getMessage();
         } finally {
-
+            storeTasklistToFile();
         }
         return output;
+    }
+
+
+    /**
+     * Checks if the exit command has been issued.
+     *
+     * @return true if the application should exit, false otherwise.
+     */
+    public boolean isExit() {
+        return command.isExit();
     }
 
 

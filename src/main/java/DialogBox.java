@@ -1,15 +1,16 @@
+import java.io.IOException;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import java.io.IOException;
-import java.util.Collections;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 
 
 
@@ -56,7 +57,7 @@ public class DialogBox extends HBox {
         return new DialogBox(s, i);
     }
 
-    public static DialogBox getDukeDialog(String s, Image i) {
+    public static DialogBox getPrincessDialog(String s, Image i) {
         var db = new DialogBox(s, i);
         db.flip();
         return db;
