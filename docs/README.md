@@ -1,8 +1,9 @@
-# Duke User Guide
+# Princess Task Manager User Guide
 
 // Update the title above to match the actual product name
 
 // Product screenshot goes here
+Ui.png
 
 // Product intro goes here
 
