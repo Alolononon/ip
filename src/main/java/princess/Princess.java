@@ -31,12 +31,11 @@ public class Princess {
     }
 
     /**
-     * The main method to run the application.
+     * The entry point of the Princess Task Manager application.
      *
-     * @param args command-line arguments (not used)
+     * @param args Command-line arguments (not used in this application).
      */
     public static void main(String[] args) {
-
         new Princess().run();
     }
 
