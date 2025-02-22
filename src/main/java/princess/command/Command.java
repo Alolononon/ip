@@ -265,7 +265,7 @@ public class Command {
     }
 
     private static String extractTaskName(String input) {
-        return input.substring(5).split(" /at ")[0];
+        return input.substring(5).split(" /at ")[0].trim();
     }
 
     /**
@@ -297,8 +297,8 @@ public class Command {
 
     private static ExtractDeadlineDetails getDeadlineDetails(String input) {
         String[] stringArr = input.substring(9).split("/by | /at");
-        String taskName = stringArr[0];
-        String by = stringArr[1];
+        String taskName = stringArr[0].trim();
+        String by = stringArr[1].trim();
         ExtractDeadlineDetails result = new ExtractDeadlineDetails(taskName, by);
         return result;
     }
@@ -337,9 +337,9 @@ public class Command {
 
     private static GetEventDetails getEventDetails(String input) {
         String[] stringArr = input.substring(6).split("/from | /to | /at");
-        String taskName = stringArr[0];
-        String from = stringArr[1];
-        String to = stringArr[2];
+        String taskName = stringArr[0].trim();
+        String from = stringArr[1].trim();
+        String to = stringArr[2].trim();
         GetEventDetails eventDetails = new GetEventDetails(taskName, from, to);
         return eventDetails;
     }

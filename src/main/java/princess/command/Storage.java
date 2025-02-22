@@ -19,10 +19,10 @@ import princess.task.Todo;
  */
 public class Storage {
 
-    /**
-     * The path to the file where tasks are stored.
-     */
-    private String filePath;
+    private String filePath; // The path to the file where tasks are stored.
+    private String storageError = "";
+
+
 
     /**
      * Constructs a new <code>Storage</code> object with the specified file path.
@@ -93,10 +93,16 @@ public class Storage {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
+                String place = null;
+                if (line.contains("/at")) {
+                    place = line.split("/at")[1].trim();
+                }
+                line = line.split("/at")[0].trim();
                 String[] lineArr = line.split(" \\| ");
 
                 if (lineArr.length < 3) {
-                    System.out.println("Skipping invalid line: " + line);
+                    System.err.println("Skipping invalid line: " + line);
+                    storageError += "Skipping invalid line: " + line;
                     continue;
                 }
 
@@ -105,31 +111,42 @@ public class Storage {
                 String description = lineArr[2];
                 Task task = null;
 
-                switch (type) {
-                case "T":
-                    task = new Todo(description);
-                    break;
-                case "D":
-                    if (lineArr.length < 4) {
-                        task = null; // Ensure valid deadline format
+                try {
+
+                    switch (type) {
+                    case "T":
+                        task = new Todo(description);
                         break;
-                    }
-                    task = new Deadline(description, lineArr[3]); // parts[3] is due date
-                    break;
-                case "E":
-                    if (lineArr.length < 5) {
-                        task = null; // Ensure valid event format
+                    case "D":
+                        if (lineArr.length < 4) {
+                            task = null; // Ensure valid deadline format
+                            break;
+                        }
+                        task = new Deadline(description, lineArr[3]); // parts[3] is due date
                         break;
+                    case "E":
+                        if (lineArr.length < 5) {
+                            task = null; // Ensure valid event format
+                            break;
+                        }
+                        task = new Event(description, lineArr[3], lineArr[4]); // parts[3] = from, parts[4] = to
+                        break;
+                    default:
+                        task = null;
+                        throw new RuntimeException("Unknown task type: " + type);
                     }
-                    task = new Event(description, lineArr[3], lineArr[4]); // parts[3] = from, parts[4] = to
-                    break;
-                default:
-                    task = null;
+                    if (task != null) {
+                        task.setPlace(place);
+                        if (isDone) {
+                            task.markTask();
+                        }
+                        storage.add(task); // Add parsed task to storage
+                    }
+                } catch (Exception e) {
+                    storageError += e.getMessage() + "\n";
+                    System.err.println(storageError);
                 }
 
-                if (task != null) {
-                    storage.add(task); // Add parsed task to storage
-                }
 
             }
 
@@ -139,7 +156,14 @@ public class Storage {
         return storage;
     }
 
-
+    /**
+     * Returns any error messages from loading tasks.
+     *
+     * @return Error messages if there were issues, otherwise an empty string.
+     */
+    public String getStorageError() {
+        return storageError;
+    }
 
     /**
      * Writes tasks from an ArrayList to a file.
@@ -152,13 +176,19 @@ public class Storage {
         FileWriter fw = new FileWriter(filePath);
         for (Task task : storage) {
             if (task instanceof Todo) {
-                fw.write("T | " + (task.getIsTaskDone() ? "1" : "0") + " | " + task.getTaskName() + "\n");
+                fw.write("T | " + (task.getIsTaskDone() ? "1" : "0") + " | " + task.getTaskName()
+                        + (task.getPlace().getPlaceName() == null ? "" : " /at " + task.getPlace().getPlaceName())
+                        + "\n");
             } else if (task instanceof Deadline) {
                 fw.write("D | " + (task.getIsTaskDone() ? "1" : "0") + " | " + task.getTaskName()
-                        + " | " + ((Deadline) task).getBy() + "\n");
+                        + " | " + ((Deadline) task).getBy()
+                        + (task.getPlace().getPlaceName() == null ? "" : " /at " + task.getPlace().getPlaceName())
+                        + "\n");
             } else if (task instanceof Event) {
                 fw.write("E | " + (task.getIsTaskDone() ? "1" : "0") + " | " + task.getTaskName()
-                        + " | " + ((Event) task).getFrom() + " | " + ((Event) task).getTo() + "\n");
+                        + " | " + ((Event) task).getFrom() + " | " + ((Event) task).getTo()
+                        + (task.getPlace().getPlaceName() == null ? "" : " /at " + task.getPlace().getPlaceName())
+                        + "\n");
             }
         }
         fw.close();

@@ -11,50 +11,50 @@
 
     ____________________________________________________________
      Got it. I've added this task:
-       [D][ ] return book  (by: Mar 01 2000, 1:00PM)
+       [D][ ] return book (by: Mar 01 2000, 1:00PM)
      Now you have 2 tasks in the list.
     ____________________________________________________________
 
     ____________________________________________________________
      Got it. I've added this task:
-       [E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
+       [E][ ] project meeting (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
      Now you have 3 tasks in the list.
     ____________________________________________________________
 
     ____________________________________________________________
      Nice! You are the best! Princess have help you marked this task as done:
-       [D][X] return book  (by: Mar 01 2000, 1:00PM)
+       [D][X] return book (by: Mar 01 2000, 1:00PM)
     ____________________________________________________________
 
     ____________________________________________________________
      Here are the tasks in your list for your Princess!
      1.[T][ ] borrow book
-     2.[D][X] return book  (by: Mar 01 2000, 1:00PM)
-     3.[E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
+     2.[D][X] return book (by: Mar 01 2000, 1:00PM)
+     3.[E][ ] project meeting (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
     ____________________________________________________________
 
     ____________________________________________________________
      Whattt?!?! Alright... Princess have marked this task as undone:
-       [D][ ] return book  (by: Mar 01 2000, 1:00PM)
+       [D][ ] return book (by: Mar 01 2000, 1:00PM)
     ____________________________________________________________
 
     ____________________________________________________________
      Here are the tasks in your list for your Princess!
      1.[T][ ] borrow book
-     2.[D][ ] return book  (by: Mar 01 2000, 1:00PM)
-     3.[E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
+     2.[D][ ] return book (by: Mar 01 2000, 1:00PM)
+     3.[E][ ] project meeting (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
     ____________________________________________________________
 
     ____________________________________________________________
      Alrighty, Princess have removed this task:
-       [D][ ] return book  (by: Mar 01 2000, 1:00PM)
+       [D][ ] return book (by: Mar 01 2000, 1:00PM)
      Now you have 2 tasks in the list.
     ____________________________________________________________
 
     ____________________________________________________________
      Here are the tasks in your list for your Princess!
      1.[T][ ] borrow book
-     2.[E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
+     2.[E][ ] project meeting (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
     ____________________________________________________________
 
     ____________________________________________________________
@@ -65,7 +65,7 @@
 
     ____________________________________________________________
      Alrighty, Princess have removed this task:
-       [E][ ] project meeting  (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
+       [E][ ] project meeting (from: Mar 01 2000, 10:00AM to: Mar 01 2000, 12:00PM)
      Now you have 0 tasks in the list.
     ____________________________________________________________
 

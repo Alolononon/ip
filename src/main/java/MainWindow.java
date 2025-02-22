@@ -39,6 +39,7 @@ public class MainWindow extends AnchorPane {
                     DialogBox.getPrincessDialog(princess.getWelcomeResponse(), princessImage)
             );
         }
+
     }
 
     /** Injects the Princess instance */
@@ -49,6 +50,16 @@ public class MainWindow extends AnchorPane {
         dialogContainer.getChildren().add(
                 DialogBox.getPrincessDialog(princess.getWelcomeResponse(), princessImage)
         );
+
+        // Check and display file loading error message
+        String errorMessage = princess.getStorage().getStorageError();
+        if (!errorMessage.isEmpty()) {
+            dialogContainer.getChildren().add(
+                    DialogBox.getPrincessDialog("Warning: Some saved data is corrupted and may be lost. "
+                            + "Error loading task: \n"
+                            + errorMessage, princessImage)
+            );
+        }
     }
 
 

@@ -23,6 +23,15 @@ public class Place {
     }
 
     /**
+     * Returns the name of the place.
+     *
+     * @return The place name.
+     */
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    /**
      * Returns a string representation of this place.
      *
      * @return a string containing the place name if set, or an empty string otherwise

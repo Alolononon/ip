@@ -73,11 +73,12 @@ public class Princess {
         } finally {
             System.out.print(ui.showDivider());
         }
-
-
-
     }
 
+    /**
+     * Saves the current task list to the file.
+     * Displays an error message if saving fails.
+     */
     private void storeTasklistToFile() {
         // Save tasks to file before exiting
         try {
@@ -120,6 +121,13 @@ public class Princess {
         return command.isExit();
     }
 
-
+    /**
+     * Returns the storage instance.
+     *
+     * @return The storage object.
+     */
+    public Storage getStorage() {
+        return storage;
+    }
 }
 

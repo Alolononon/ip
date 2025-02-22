@@ -45,6 +45,7 @@ public class DateParser {
             createFormatter("yyyy-MM-dd h:mma", false), // 2000-03-01 4:00PM
             createFormatter("dd-MM-yyyy h:mma", false), // 01-03-2000 4:00PM
             createFormatter("MMM dd yyyy h:mma", false), // Mar 01 2000 4:00PM
+            createFormatter("MMM dd yyyy, h:mma", false), // Mar 01 2000 4:00PM
             createFormatter("dd/MM/yyyy h:mma", false), // 01/03/2000 4:00PM
 
             // Formats that support "4PM" without minutes.
